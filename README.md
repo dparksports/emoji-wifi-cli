@@ -4,6 +4,8 @@ An interactive command-line application for Ubuntu to instantly generate WiFi na
 
 This is an Ubuntu CLI port of [EmojiWifi (macOS)](https://github.com/dparksports/emoji-wifi-mac).
 
+![EmojiWifi CLI Infographic](wifi_cli_infographic.png)
+
 ---
 
 ## ✨ Features

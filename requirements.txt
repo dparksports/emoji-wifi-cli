@@ -1,0 +1,5 @@
+emoji>=2.0.0
+qrcode[pil]>=8.0
+pyperclip>=1.8.2
+zxingcpp>=2.0.0
+pillow>=9.0.0
