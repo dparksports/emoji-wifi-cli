@@ -29,7 +29,22 @@ try:
     EMOJI_DATA = list(_emoji_mod.EMOJI_DATA.keys())
     SINGLE_EMOJIS = [c for c in EMOJI_DATA if len(c) == 1 and c not in ['️', '⃣']]
 except ImportError:
-    SINGLE_EMOJIS = ["📶", "🏠", "💻", "📱", "🔒", "🌐", "🚀", "✨", "🔑", "🛡️"]
+    SINGLE_EMOJIS = [
+        # Tech & Networks
+        "📶", "📡", "💻", "📱", "🌐", "🔗", "💾", "🔋", "🔌", "💡", "⚡", "🔒", "🔓", "🔑", "🛡️", "⚙️", "🛰️", "🤖", "👾", "🧠",
+        # Fun & Games
+        "🎮", "🎸", "🎵", "🎧", "🎤", "🎷", "🎹", "🥁", "🎨", "🎬", "🎳", "🎲", "🎯", "🎪", "🎭", "🎟️", "🔮", "🃏",
+        # Travel & Space
+        "🚀", "🛸", "🌌", "☄️", "⭐", "🌟", "✨", "☀️", "🌙", "☁️", "🌧️", "⛈️", "❄️", "🌈", "🔥", "🌊", "🌋", "🏔️", "🏕️",
+        # Animals & Nature
+        "🐱", "🐶", "🐼", "🦊", "🦁", "🐯", "🐨", "🐻", "🐸", "🐙", "🐵", "🦄", "🦅", "🦖", "🐉", "🐢", "🐬", "🌴", "🌲", "🍀",
+        # Food & Drink
+        "🍕", "🍔", "🍟", "🌭", "🍿", "🍩", "🍪", "🍰", "🍫", "🍬", "☕", "🍺", "🍷", "🍹", "🥤", "🌶️", "🌮", "🍣", "🍦", "🍎",
+        # Hearts & Symbols
+        "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "💖", "💝", "💯", "💥", "💨", "💤", "💬", "💭", "📣", "🔔",
+        # Smileys & People
+        "😎", "🤓", "🤡", "🤠", "👽", "👻", "💀", "🤖", "🎃", "💩", "👑", "🎩", "🏆", "🥇", "🥈", "🥉"
+    ]
 
 try:
     import qrcode
@@ -320,6 +335,7 @@ def choose_ssid_menu(combos, singles) -> str | None:
     menu_item("2", "Pick from curated single emojis list")
     menu_item("3", "Pick from themed combo (emoji + name)")
     menu_item("4", "Enter custom WiFi name")
+    menu_item("5", "Search all emojis by keyword (from full emoji database)")
     menu_item("b", "Back")
     choice = ask("Select")
     if choice == "1":
@@ -356,6 +372,44 @@ def choose_ssid_menu(combos, singles) -> str | None:
     elif choice == "4":
         name = ask("WiFi name")
         return name if name else None
+    elif choice == "5":
+        try:
+            import emoji as _emoji_mod
+        except ImportError:
+            print(c("  ⚠  The 'emoji' package is not installed. Run 'pip install emoji' first.", YELLOW))
+            return None
+        
+        query = ask("Enter search keyword (e.g. cat, wifi, heart, coding)")
+        if not query:
+            return None
+            
+        matches = []
+        for em, info in _emoji_mod.EMOJI_DATA.items():
+            if len(em) == 1 and em not in ['️', '⃣']:
+                shortcode = info.get('en', '')
+                if query.lower() in shortcode.lower():
+                    clean_name = shortcode.replace(':', '').replace('_', ' ')
+                    matches.append((em, clean_name))
+        
+        if not matches:
+            print(c(f"  ✗ No matching emojis found for '{query}'.", RED))
+            return None
+            
+        print(f"\n  Found {c(len(matches), YELLOW)} matches:")
+        for idx, (em, name) in enumerate(matches[:40], 1):
+            print(f"  {c(str(idx).rjust(2), DIM)}  {em}  {c(name, DIM)}")
+        
+        if len(matches) > 40:
+            print(c(f"  ... and {len(matches) - 40} more matches.", DIM))
+            
+        num = ask("Enter number to select", "1")
+        try:
+            val_idx = int(num) - 1
+            selected = matches[val_idx % len(matches[:40])][0]
+            print(f"\n  Selected: {c(selected, YELLOW, BOLD)}")
+            return selected
+        except (ValueError, IndexError):
+            return matches[0][0]
     return None
 
 def history_menu(history: list, combos, singles):
