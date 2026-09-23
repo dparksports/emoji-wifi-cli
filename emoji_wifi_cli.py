@@ -12,6 +12,8 @@ Features:
   • Scan a WiFi QR image file (via zxingcpp if available)
 """
 
+from __future__ import annotations
+
 import os
 import sys
 import json
