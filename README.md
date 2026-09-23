@@ -4,7 +4,9 @@ An interactive command-line application for Ubuntu to instantly generate WiFi na
 
 This is an Ubuntu CLI port of [EmojiWifi (macOS)](https://github.com/dparksports/emoji-wifi-mac).
 
-![EmojiWifi CLI Infographic](wifi_cli_infographic.png)
+![emoji-wifi-cli overview](infographic_overview.png)
+
+![How emoji-wifi-cli works](infographic_how_it_works.png)
 
 ---
 
@@ -24,15 +26,10 @@ This is an Ubuntu CLI port of [EmojiWifi (macOS)](https://github.com/dparksports
 
 ### Prerequisites
 
-You need Python 3 installed. Make sure you install the required dependencies:
+You need Python 3 installed. Install the required dependencies:
 
 ```bash
-pip install emoji qrcode[pil] pyperclip
-```
-
-*(Optional)* If you want to scan QR code images:
-```bash
-pip install zxingcpp pillow
+pip install -r requirements.txt
 ```
 
 ### Installation
